@@ -1,0 +1,1013 @@
+<!DOCTYPE html>
+<html lang="es" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LAS MAMBAS - Auto Lavado, Detailing & Mensajería</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&family=Orbitron:wght@600;800;900&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        mamba: {
+                            red: '#E60012',
+                            redhover: '#C0000F',
+                            dark: '#0A0A0B',
+                            card: '#141417',
+                            border: '#282830',
+                            silver: '#D1D5DB',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Montserrat', 'sans-serif'],
+                        tech: ['Orbitron', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #0A0A0B;
+            color: #F3F4F6;
+            font-family: 'Montserrat', sans-serif;
+        }
+        .mamba-gradient {
+            background: linear-gradient(135deg, #18181B 0%, #09090B 100%);
+        }
+        .mamba-red-gradient {
+            background: linear-gradient(135deg, #E60012 0%, #99000C 100%);
+        }
+        .mamba-glow {
+            box-shadow: 0 0 15px rgba(230, 0, 18, 0.35);
+        }
+        .mamba-text-glow {
+            text-shadow: 0 0 10px rgba(230, 0, 18, 0.6);
+        }
+        .silver-text {
+            background: linear-gradient(180deg, #FFFFFF 0%, #A1A1AA 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        /* Style for printable documents */
+        @media print {
+            body * {
+                visibility: hidden;
+            }
+            #printable-area, #printable-area * {
+                visibility: visible;
+            }
+            #printable-area {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+                background: white !important;
+                color: black !important;
+            }
+            .no-print {
+                display: none !important;
+            }
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col antialiased selection:bg-mamba-red selection:text-white">
+
+    <!-- Navigation / Header -->
+    <header class="bg-mamba-card border-b border-mamba-border sticky top-0 z-40 shadow-xl">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                <!-- Branding Header -->
+                <div class="flex items-center space-x-3">
+                    <div class="relative flex items-center justify-center w-12 h-12 bg-mamba-red rounded-xl mamba-glow">
+                        <i class="fa-solid fa-staff-snake text-2xl text-white"></i>
+                    </div>
+                    <div>
+                        <h1 class="font-tech text-xl sm:text-2xl font-black tracking-wider silver-text">
+                            LAS MAMBAS
+                        </h1>
+                        <p class="text-xs font-semibold tracking-widest text-mamba-red uppercase" id="subtitle-mode">
+                            Auto Lavado & Detailing
+                        </p>
+                    </div>
+                </div>
+
+                <!-- WhatsApp Contact Badge -->
+                <div class="hidden md:flex items-center space-x-2 bg-black/50 border border-mamba-border px-3 py-1.5 rounded-full">
+                    <i class="fa-brands fa-whatsapp text-green-500 text-xl"></i>
+                    <span class="font-bold text-sm tracking-wide text-white">8881 8720</span>
+                </div>
+
+                <!-- Mode Switcher Buttons -->
+                <div class="flex bg-black p-1 rounded-xl border border-mamba-border">
+                    <button id="btn-mode-autolavado" onclick="switchMode('autolavado')" 
+                            class="flex items-center space-x-2 px-4 py-2 rounded-lg text-sm font-bold transition-all duration-300 bg-mamba-red text-white shadow-lg">
+                        <i class="fa-solid fa-car"></i>
+                        <span>AutoLavado</span>
+                    </button>
+                    <button id="btn-mode-mensajeria" onclick="switchMode('mensajeria')" 
+                            class="flex items-center space-x-2 px-4 py-2 rounded-lg text-sm font-bold transition-all duration-300 text-gray-400 hover:text-white">
+                        <i class="fa-solid fa-motorcycle"></i>
+                        <span>Mensajería</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Phone Badge -->
+        <div class="md:hidden bg-black/80 py-1 text-center border-t border-mamba-border flex justify-center items-center space-x-2">
+            <i class="fa-brands fa-whatsapp text-green-500 text-sm"></i>
+            <span class="text-xs font-bold text-gray-200">Contacto: 8881 8720</span>
+        </div>
+    </header>
+
+    <!-- Sub-navigation Tabs -->
+    <nav class="bg-black/60 border-b border-mamba-border/50 sticky top-20 z-30 backdrop-blur-md">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex space-x-2 sm:space-x-4 overflow-x-auto py-2 no-scrollbar">
+                <button onclick="switchTab('servicios')" id="tab-servicios" class="tab-btn active-tab px-4 py-2 rounded-lg text-sm font-bold flex items-center space-x-2 whitespace-nowrap bg-mamba-border/60 text-white border-l-2 border-mamba-red">
+                    <i class="fa-solid fa-list-check"></i>
+                    <span>Servicios</span>
+                </button>
+                <button onclick="switchTab('clientes')" id="tab-clientes" class="tab-btn px-4 py-2 rounded-lg text-sm font-bold flex items-center space-x-2 whitespace-nowrap text-gray-400 hover:text-white">
+                    <i class="fa-solid fa-users"></i>
+                    <span>Clientes</span>
+                </button>
+                <button onclick="switchTab('citas')" id="tab-citas" class="tab-btn px-4 py-2 rounded-lg text-sm font-bold flex items-center space-x-2 whitespace-nowrap text-gray-400 hover:text-white">
+                    <i class="fa-solid fa-calendar-days"></i>
+                    <span>Citas</span>
+                </button>
+                <button onclick="switchTab('cotizacion')" id="tab-cotizacion" class="tab-btn px-4 py-2 rounded-lg text-sm font-bold flex items-center space-x-2 whitespace-nowrap text-gray-400 hover:text-white">
+                    <i class="fa-solid fa-file-signature"></i>
+                    <span>Cotización</span>
+                </button>
+                <button onclick="switchTab('factura')" id="tab-factura" class="tab-btn px-4 py-2 rounded-lg text-sm font-bold flex items-center space-x-2 whitespace-nowrap text-gray-400 hover:text-white">
+                    <i class="fa-solid fa-file-invoice-dollar"></i>
+                    <span>Factura</span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Application Body -->
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6">
+
+        <!-- 1. SERVICIOS SECTION -->
+        <section id="sec-servicios" class="space-y-6">
+            <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                <div>
+                    <h2 class="text-2xl font-extrabold text-white flex items-center gap-2">
+                        <i class="fa-solid fa-tags text-mamba-red"></i> Catálogo de Servicios
+                    </h2>
+                    <p class="text-sm text-gray-400">Agrega, edita o elimina los servicios ofrecidos en <span class="mode-text font-semibold text-mamba-red">AutoLavado</span>.</p>
+                </div>
+                <button onclick="openModal('modal-service')" class="mamba-red-gradient hover:opacity-90 text-white font-bold px-5 py-2.5 rounded-xl flex items-center space-x-2 shadow-lg mamba-glow self-start">
+                    <i class="fa-solid fa-plus"></i>
+                    <span>Nuevo Servicio</span>
+                </button>
+            </div>
+
+            <!-- List of Services -->
+            <div id="services-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <!-- Injected via JS -->
+            </div>
+        </section>
+
+        <!-- 2. CLIENTES SECTION -->
+        <section id="sec-clientes" class="space-y-6 hidden">
+            <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                <div>
+                    <h2 class="text-2xl font-extrabold text-white flex items-center gap-2">
+                        <i class="fa-solid fa-users text-mamba-red"></i> Directorio de Clientes
+                    </h2>
+                    <p class="text-sm text-gray-400">Administra los datos de tus clientes habituales, vehículos y ubicaciones.</p>
+                </div>
+                <button onclick="openModal('modal-client')" class="mamba-red-gradient hover:opacity-90 text-white font-bold px-5 py-2.5 rounded-xl flex items-center space-x-2 shadow-lg mamba-glow self-start">
+                    <i class="fa-solid fa-user-plus"></i>
+                    <span>Agregar Cliente</span>
+                </button>
+            </div>
+
+            <div id="clients-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <!-- Injected via JS -->
+            </div>
+        </section>
+
+        <!-- 3. CITAS SECTION -->
+        <section id="sec-citas" class="space-y-6 hidden">
+            <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                <div>
+                    <h2 class="text-2xl font-extrabold text-white flex items-center gap-2">
+                        <i class="fa-solid fa-calendar-check text-mamba-red"></i> Programación de Citas
+                    </h2>
+                    <p class="text-sm text-gray-400">Agenda turnos para servicios de <span class="mode-text font-semibold text-mamba-red">AutoLavado</span>.</p>
+                </div>
+                <button onclick="openAppointmentModal()" class="mamba-red-gradient hover:opacity-90 text-white font-bold px-5 py-2.5 rounded-xl flex items-center space-x-2 shadow-lg mamba-glow self-start">
+                    <i class="fa-solid fa-calendar-plus"></i>
+                    <span>Agendar Cita</span>
+                </button>
+            </div>
+
+            <div class="bg-mamba-card border border-mamba-border rounded-2xl p-4 overflow-x-auto">
+                <table class="w-full text-left text-sm text-gray-300">
+                    <thead class="text-xs uppercase bg-black/60 text-mamba-red font-bold">
+                        <tr>
+                            <th class="px-4 py-3 rounded-l-lg">Cliente</th>
+                            <th class="px-4 py-3">Vehículo / Detalle</th>
+                            <th class="px-4 py-3">Fecha y Hora</th>
+                            <th class="px-4 py-3">Modo</th>
+                            <th class="px-4 py-3 text-right rounded-r-lg">Acción</th>
+                        </tr>
+                    </thead>
+                    <tbody id="appointments-table-body" class="divide-y divide-mamba-border/50">
+                        <!-- Injected via JS -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- 4. COTIZACIÓN SECTION -->
+        <section id="sec-cotizacion" class="space-y-6 hidden">
+            <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                <div>
+                    <h2 class="text-2xl font-extrabold text-white flex items-center gap-2">
+                        <i class="fa-solid fa-file-signature text-mamba-red"></i> Generador de Cotización
+                    </h2>
+                    <p class="text-sm text-gray-400">Crea cotizaciones personalizadas descargables o imprimibles.</p>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                <!-- Form Column -->
+                <div class="lg:col-span-5 bg-mamba-card border border-mamba-border rounded-2xl p-5 space-y-4">
+                    <h3 class="font-bold text-lg text-white border-b border-mamba-border pb-2">Datos de la Cotización</h3>
+                    
+                    <!-- Client Selector -->
+                    <div>
+                        <label class="block text-xs font-bold text-gray-400 uppercase mb-1">Cliente Guardado</label>
+                        <select id="quote-client-select" onchange="loadQuoteClientData()" class="w-full bg-black border border-mamba-border rounded-xl px-3 py-2 text-white focus:border-mamba-red focus:outline-none">
+                            <option value="">-- Seleccionar Cliente --</option>
+                        </select>
+                    </div>
+
+                    <!-- Mode Specific Quote Settings -->
+                    <div id="quote-messaging-calc" class="hidden space-y-3 bg-black/40 p-3 rounded-xl border border-mamba-border">
+                        <h4 class="text-xs font-bold text-mamba-red uppercase flex items-center gap-1">
+                            <i class="fa-solid fa-route"></i> Cálculo de Distancia (Mensajería)
+                        </h4>
+                        <div>
+                            <label class="block text-xs text-gray-400">Punto de Recolección</label>
+                            <input type="text" id="quote-pickup" placeholder="Ej: San José Centro" class="w-full bg-black border border-mamba-border rounded-lg px-3 py-1.5 text-sm text-white focus:border-mamba-red focus:outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-xs text-gray-400">Punto de Entrega</label>
+                            <input type="text" id="quote-dropoff" placeholder="Ej: Heredia San Francisco" class="w-full bg-black border border-mamba-border rounded-lg px-3 py-1.5 text-sm text-white focus:border-mamba-red focus:outline-none">
+                        </div>
+                        <div class="grid grid-cols-2 gap-2">
+                            <div>
+                                <label class="block text-xs text-gray-400">Distancia (km)</label>
+                                <input type="number" id="quote-km" value="1" min="0.1" step="0.5" oninput="calculateMessagingCost()" class="w-full bg-black border border-mamba-border rounded-lg px-3 py-1.5 text-sm text-white focus:border-mamba-red focus:outline-none">
+                            </div>
+                            <div>
+                                <label class="block text-xs text-gray-400">Tarifa / km</label>
+                                <input type="text" readonly value="₡350.00" class="w-full bg-mamba-border/40 border border-mamba-border rounded-lg px-3 py-1.5 text-sm text-gray-300">
+                            </div>
+                        </div>
+                        <div class="bg-mamba-red/10 border border-mamba-red/30 rounded-lg p-2 text-xs flex justify-between items-center text-mamba-red font-bold">
+                            <span>Subtotal Envío:</span>
+                            <span id="messaging-subtotal-display">₡350.00</span>
+                        </div>
+                    </div>
+
+                    <!-- Service Checklist selection -->
+                    <div>
+                        <label class="block text-xs font-bold text-gray-400 uppercase mb-1">Añadir Servicios Adicionales</label>
+                        <div id="quote-services-checkboxes" class="max-h-48 overflow-y-auto space-y-2 pr-2 bg-black/30 p-2 rounded-xl border border-mamba-border">
+                            <!-- Injected dynamically -->
+                        </div>
+                    </div>
+
+                    <!-- Custom Extra Fee -->
+                    <div class="grid grid-cols-2 gap-2">
+                        <div>
+                            <label class="block text-xs font-bold text-gray-400 uppercase mb-1">Nota u Observación</label>
+                            <input type="text" id="quote-note" placeholder="Ej. Incluye IVA" class="w-full bg-black border border-mamba-border rounded-xl px-3 py-2 text-sm text-white">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-gray-400 uppercase mb-1">Descuento (₡)</label>
+                            <input type="number" id="quote-discount" value="0" oninput="renderQuotePreview()" class="w-full bg-black border border-mamba-border rounded-xl px-3 py-2 text-sm text-white">
+                        </div>
+                    </div>
+
+                    <button onclick="printDocument('printable-quote')" class="w-full mamba-red-gradient text-white font-bold py-3 rounded-xl shadow-lg flex justify-center items-center space-x-2">
+                        <i class="fa-solid fa-print"></i>
+                        <span>Imprimir / Descargar PDF</span>
+                    </button>
+                </div>
+
+                <!-- Preview Column -->
+                <div class="lg:col-span-7">
+                    <div class="bg-mamba-card border border-mamba-border rounded-2xl p-4 overflow-hidden">
+                        <h3 class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-3">Vista Previa del Documento</h3>
+                        
+                        <!-- Document Canvas -->
+                        <div id="printable-quote" class="bg-white text-gray-900 p-6 sm:p-8 rounded-xl shadow-2xl font-sans text-sm">
+                            <!-- Injected JS Content -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 5. FACTURA SECTION -->
+        <section id="sec-factura" class="space-y-6 hidden">
+            <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                <div>
+                    <h2 class="text-2xl font-extrabold text-white flex items-center gap-2">
+                        <i class="fa-solid fa-file-invoice-dollar text-mamba-red"></i> Emisión de Factura
+                    </h2>
+                    <p class="text-sm text-gray-400">Genera comprobantes de cobro detallados e impresos.</p>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                <!-- Form Column -->
+                <div class="lg:col-span-5 bg-mamba-card border border-mamba-border rounded-2xl p-5 space-y-4">
+                    <h3 class="font-bold text-lg text-white border-b border-mamba-border pb-2">Configurar Factura</h3>
+                    
+                    <div>
+                        <label class="block text-xs font-bold text-gray-400 uppercase mb-1">Cliente</label>
+                        <select id="invoice-client-select" onchange="renderInvoicePreview()" class="w-full bg-black border border-mamba-border rounded-xl px-3 py-2 text-white focus:border-mamba-red">
+                            <option value="">-- Seleccionar Cliente --</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold text-gray-400 uppercase mb-1">Seleccionar Servicios a Facturar</label>
+                        <div id="invoice-services-checkboxes" class="max-h-52 overflow-y-auto space-y-2 pr-2 bg-black/30 p-2 rounded-xl border border-mamba-border">
+                            <!-- Injected dynamically -->
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold text-gray-400 uppercase mb-1">Método de Pago</label>
+                        <select id="invoice-payment-method" onchange="renderInvoicePreview()" class="w-full bg-black border border-mamba-border rounded-xl px-3 py-2 text-white">
+                            <option value="Efectivo">Efectivo</option>
+                            <option value="SINPE Móvil">SINPE Móvil</option>
+                            <option value="Tarjeta de Débito / Crédito">Tarjeta de Débito / Crédito</option>
+                            <option value="Transferencia Bancaria">Transferencia Bancaria</option>
+                        </select>
+                    </div>
+
+                    <button onclick="printDocument('printable-invoice')" class="w-full mamba-red-gradient text-white font-bold py-3 rounded-xl shadow-lg flex justify-center items-center space-x-2">
+                        <i class="fa-solid fa-file-pdf"></i>
+                        <span>Imprimir / Descargar Factura</span>
+                    </button>
+                </div>
+
+                <!-- Preview Column -->
+                <div class="lg:col-span-7">
+                    <div class="bg-mamba-card border border-mamba-border rounded-2xl p-4 overflow-hidden">
+                        <h3 class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-3">Vista Previa de Factura</h3>
+                        
+                        <div id="printable-invoice" class="bg-white text-gray-900 p-6 sm:p-8 rounded-xl shadow-2xl font-sans text-sm">
+                            <!-- Injected JS Content -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- MODALS CONTAINER -->
+
+    <!-- Service Modal -->
+    <div id="modal-service" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex justify-center items-center hidden p-4">
+        <div class="bg-mamba-card border border-mamba-border max-w-md w-full rounded-2xl p-6 shadow-2xl relative">
+            <h3 class="text-xl font-bold text-white mb-4 flex items-center gap-2">
+                <i class="fa-solid fa-plus-circle text-mamba-red"></i> <span id="modal-service-title">Nuevo Servicio</span>
+            </h3>
+            <form id="form-service" onsubmit="saveService(event)" class="space-y-4">
+                <input type="hidden" id="service-id">
+                <div>
+                    <label class="block text-xs font-bold text-gray-300 uppercase mb-1">Nombre del Servicio</label>
+                    <input type="text" id="service-name" required placeholder="Ej: Lavado Completo + Cera" class="w-full bg-black border border-mamba-border rounded-xl px-3 py-2 text-white focus:border-mamba-red focus:outline-none">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-gray-300 uppercase mb-1">Precio (Colones ₡)</label>
+                    <input type="number" id="service-price" required min="0" step="500" placeholder="10000" class="w-full bg-black border border-mamba-border rounded-xl px-3 py-2 text-white focus:border-mamba-red focus:outline-none">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-gray-300 uppercase mb-1">Categoría / Modo</label>
+                    <select id="service-category" class="w-full bg-black border border-mamba-border rounded-xl px-3 py-2 text-white">
+                        <option value="autolavado">AutoLavado & Detailing</option>
+                        <option value="mensajeria">Mensajería & Paquetes</option>
+                    </select>
+                </div>
+                <div class="flex space-x-3 pt-2">
+                    <button type="button" onclick="closeModal('modal-service')" class="w-1/2 bg-mamba-border text-gray-300 font-bold py-2.5 rounded-xl hover:bg-gray-800">Cancelar</button>
+                    <button type="submit" class="w-1/2 mamba-red-gradient text-white font-bold py-2.5 rounded-xl">Guardar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Client Modal -->
+    <div id="modal-client" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex justify-center items-center hidden p-4">
+        <div class="bg-mamba-card border border-mamba-border max-w-md w-full rounded-2xl p-6 shadow-2xl relative">
+            <h3 class="text-xl font-bold text-white mb-4 flex items-center gap-2">
+                <i class="fa-solid fa-user-plus text-mamba-red"></i> Guardar Cliente
+            </h3>
+            <form id="form-client" onsubmit="saveClient(event)" class="space-y-3">
+                <input type="hidden" id="client-id">
+                <div>
+                    <label class="block text-xs font-bold text-gray-300 uppercase mb-1">Nombre Completo</label>
+                    <input type="text" id="client-name" required placeholder="Ej: Carlos Alvarado" class="w-full bg-black border border-mamba-border rounded-xl px-3 py-2 text-white">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-gray-300 uppercase mb-1">Teléfono</label>
+                    <input type="text" id="client-phone" placeholder="Ej: 8888 0000" class="w-full bg-black border border-mamba-border rounded-xl px-3 py-2 text-white">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-gray-300 uppercase mb-1">Tipo de Vehículo / Modelo</label>
+                    <input type="text" id="client-vehicle" placeholder="Ej: Toyota Hilux / Sedan / Moto" class="w-full bg-black border border-mamba-border rounded-xl px-3 py-2 text-white">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-gray-300 uppercase mb-1">Ubicación de Domicilio</label>
+                    <input type="text" id="client-home" placeholder="Dirección de Casa" class="w-full bg-black border border-mamba-border rounded-xl px-3 py-2 text-white">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-gray-300 uppercase mb-1">Ubicación de Trabajo</label>
+                    <input type="text" id="client-work" placeholder="Dirección de Oficina / Trabajo" class="w-full bg-black border border-mamba-border rounded-xl px-3 py-2 text-white">
+                </div>
+                <div class="flex space-x-3 pt-2">
+                    <button type="button" onclick="closeModal('modal-client')" class="w-1/2 bg-mamba-border text-gray-300 font-bold py-2.5 rounded-xl">Cancelar</button>
+                    <button type="submit" class="w-1/2 mamba-red-gradient text-white font-bold py-2.5 rounded-xl">Guardar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Appointment Modal -->
+    <div id="modal-appointment" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex justify-center items-center hidden p-4">
+        <div class="bg-mamba-card border border-mamba-border max-w-md w-full rounded-2xl p-6 shadow-2xl relative">
+            <h3 class="text-xl font-bold text-white mb-4 flex items-center gap-2">
+                <i class="fa-solid fa-calendar-plus text-mamba-red"></i> Programar Cita
+            </h3>
+            <form id="form-appointment" onsubmit="saveAppointment(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-bold text-gray-300 uppercase mb-1">Cliente</label>
+                    <select id="app-client-select" required class="w-full bg-black border border-mamba-border rounded-xl px-3 py-2 text-white">
+                        <option value="">-- Seleccionar --</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-gray-300 uppercase mb-1">Fecha y Hora</label>
+                    <input type="datetime-local" id="app-datetime" required class="w-full bg-black border border-mamba-border rounded-xl px-3 py-2 text-white">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-gray-300 uppercase mb-1">Detalle del Trabajo</label>
+                    <input type="text" id="app-details" placeholder="Ej: Lavado + Detailing interior" class="w-full bg-black border border-mamba-border rounded-xl px-3 py-2 text-white">
+                </div>
+                <div class="flex space-x-3 pt-2">
+                    <button type="button" onclick="closeModal('modal-appointment')" class="w-1/2 bg-mamba-border text-gray-300 font-bold py-2.5 rounded-xl">Cancelar</button>
+                    <button type="submit" class="w-1/2 mamba-red-gradient text-white font-bold py-2.5 rounded-xl">Programar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Printable container area for document export -->
+    <div id="printable-area" class="hidden"></div>
+
+    <script>
+        // --- DATA STORE INITIALIZATION ---
+        const DEFAULT_SERVICES = [
+            { id: '1', name: 'Lavado Básico Exterior', price: 5000, category: 'autolavado' },
+            { id: '2', name: 'Lavado Completo (Int/Ext)', price: 9000, category: 'autolavado' },
+            { id: '3', name: 'Detailing de Tapicería', price: 25000, category: 'autolavado' },
+            { id: '4', name: 'Pulido y Encerado', price: 30000, category: 'autolavado' },
+            { id: '5', name: 'Lavado de Motor', price: 8000, category: 'autolavado' },
+            { id: '6', name: 'Envío Urbano Express (Base)', price: 2500, category: 'mensajeria' },
+            { id: '7', name: 'Trámite / Entrega Especial', price: 4000, category: 'mensajeria' }
+        ];
+
+        const DEFAULT_CLIENTES = [
+            { id: '101', name: 'Juan Pérez', phone: '8812-3456', vehicle: 'Toyota Corolla / Sedan', home: 'Escazú Centro', work: 'Sabana Norte' },
+            { id: '102', name: 'María Rodríguez', phone: '8765-4321', vehicle: 'Hyundai Tucson / SUV', home: 'Heredia', work: 'San José Centro' }
+        ];
+
+        let state = {
+            currentMode: 'autolavado', // 'autolavado' | 'mensajeria'
+            currentTab: 'servicios',
+            services: JSON.parse(localStorage.getItem('mambas_services')) || DEFAULT_SERVICES,
+            clients: JSON.parse(localStorage.getItem('mambas_clients')) || DEFAULT_CLIENTES,
+            appointments: JSON.parse(localStorage.getItem('mambas_appointments')) || []
+        };
+
+        // --- APP INITIALIZATION ---
+        window.addEventListener('DOMContentLoaded', () => {
+            renderServices();
+            renderClients();
+            renderAppointments();
+            populateClientDropdowns();
+            renderQuoteFormServices();
+            renderInvoiceFormServices();
+            renderQuotePreview();
+            renderInvoicePreview();
+        });
+
+        function saveData() {
+            localStorage.setItem('mambas_services', JSON.stringify(state.services));
+            localStorage.setItem('mambas_clients', JSON.stringify(state.clients));
+            localStorage.setItem('mambas_appointments', JSON.stringify(state.appointments));
+        }
+
+        function formatColon(amount) {
+            return '₡' + Number(amount).toLocaleString('es-CR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        }
+
+        // --- MODE & TAB SWITCHING ---
+        function switchMode(mode) {
+            state.currentMode = mode;
+            const btnAuto = document.getElementById('btn-mode-autolavado');
+            const btnMens = document.getElementById('btn-mode-mensajeria');
+            const subtitle = document.getElementById('subtitle-mode');
+            const modeTexts = document.querySelectorAll('.mode-text');
+
+            if (mode === 'autolavado') {
+                btnAuto.className = "flex items-center space-x-2 px-4 py-2 rounded-lg text-sm font-bold transition-all duration-300 bg-mamba-red text-white shadow-lg mamba-glow";
+                btnMens.className = "flex items-center space-x-2 px-4 py-2 rounded-lg text-sm font-bold transition-all duration-300 text-gray-400 hover:text-white";
+                subtitle.textContent = "Auto Lavado & Detailing";
+                modeTexts.forEach(el => el.textContent = "AutoLavado");
+                document.getElementById('quote-messaging-calc').classList.add('hidden');
+            } else {
+                btnMens.className = "flex items-center space-x-2 px-4 py-2 rounded-lg text-sm font-bold transition-all duration-300 bg-mamba-red text-white shadow-lg mamba-glow";
+                btnAuto.className = "flex items-center space-x-2 px-4 py-2 rounded-lg text-sm font-bold transition-all duration-300 text-gray-400 hover:text-white";
+                subtitle.textContent = "Servicios de Mensajería & Express";
+                modeTexts.forEach(el => el.textContent = "Mensajería");
+                document.getElementById('quote-messaging-calc').classList.remove('hidden');
+            }
+
+            renderServices();
+            renderQuoteFormServices();
+            renderInvoiceFormServices();
+            renderQuotePreview();
+            renderInvoicePreview();
+        }
+
+        function switchTab(tabId) {
+            state.currentTab = tabId;
+            const tabs = ['servicios', 'clientes', 'citas', 'cotizacion', 'factura'];
+            
+            tabs.forEach(t => {
+                const btn = document.getElementById(`tab-${t}`);
+                const sec = document.getElementById(`sec-${t}`);
+                
+                if (t === tabId) {
+                    btn.className = "tab-btn active-tab px-4 py-2 rounded-lg text-sm font-bold flex items-center space-x-2 whitespace-nowrap bg-mamba-border/60 text-white border-l-2 border-mamba-red";
+                    sec.classList.remove('hidden');
+                } else {
+                    btn.className = "tab-btn px-4 py-2 rounded-lg text-sm font-bold flex items-center space-x-2 whitespace-nowrap text-gray-400 hover:text-white";
+                    sec.classList.add('hidden');
+                }
+            });
+        }
+
+        // --- SERVICES MODULE ---
+        function renderServices() {
+            const grid = document.getElementById('services-grid');
+            const filtered = state.services.filter(s => s.category === state.currentMode);
+
+            if (filtered.length === 0) {
+                grid.innerHTML = `<div class="col-span-full text-center py-12 text-gray-500 bg-mamba-card border border-mamba-border rounded-2xl">
+                    <i class="fa-solid fa-box-open text-4xl mb-2"></i>
+                    <p>No hay servicios registrados para este modo.</p>
+                </div>`;
+                return;
+            }
+
+            grid.innerHTML = filtered.map(s => `
+                <div class="bg-mamba-card border border-mamba-border rounded-2xl p-5 relative group hover:border-mamba-red/50 transition-all shadow-md">
+                    <div class="flex justify-between items-start mb-3">
+                        <span class="text-xs font-bold uppercase tracking-wider text-mamba-red bg-mamba-red/10 px-2.5 py-1 rounded-md border border-mamba-red/20">
+                            ${s.category === 'autolavado' ? 'AutoLavado' : 'Mensajería'}
+                        </span>
+                        <button onclick="deleteService('${s.id}')" class="text-gray-500 hover:text-mamba-red transition-colors p-1" title="Eliminar Servicio">
+                            <i class="fa-solid fa-trash-can"></i>
+                        </button>
+                    </div>
+                    <h3 class="font-bold text-lg text-white mb-2">${s.name}</h3>
+                    <div class="text-xl font-extrabold text-white">
+                        ${formatColon(s.price)}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function saveService(e) {
+            e.preventDefault();
+            const id = document.getElementById('service-id').value || Date.now().toString();
+            const name = document.getElementById('service-name').value;
+            const price = parseFloat(document.getElementById('service-price').value);
+            const category = document.getElementById('service-category').value;
+
+            const existingIndex = state.services.findIndex(s => s.id === id);
+            if (existingIndex > -1) {
+                state.services[existingIndex] = { id, name, price, category };
+            } else {
+                state.services.push({ id, name, price, category });
+            }
+
+            saveData();
+            closeModal('modal-service');
+            renderServices();
+            renderQuoteFormServices();
+            renderInvoiceFormServices();
+            document.getElementById('form-service').reset();
+        }
+
+        function deleteService(id) {
+            state.services = state.services.filter(s => s.id !== id);
+            saveData();
+            renderServices();
+            renderQuoteFormServices();
+            renderInvoiceFormServices();
+        }
+
+        // --- CLIENTS MODULE ---
+        function renderClients() {
+            const grid = document.getElementById('clients-grid');
+            if (state.clients.length === 0) {
+                grid.innerHTML = `<div class="col-span-full text-center py-12 text-gray-500 bg-mamba-card border border-mamba-border rounded-2xl">
+                    <i class="fa-solid fa-users-slash text-4xl mb-2"></i>
+                    <p>No hay clientes guardados.</p>
+                </div>`;
+                return;
+            }
+
+            grid.innerHTML = state.clients.map(c => `
+                <div class="bg-mamba-card border border-mamba-border rounded-2xl p-5 relative hover:border-mamba-red/50 transition-all">
+                    <div class="flex justify-between items-start border-b border-mamba-border/60 pb-3 mb-3">
+                        <div>
+                            <h3 class="font-bold text-white text-lg">${c.name}</h3>
+                            <p class="text-xs text-mamba-red font-semibold"><i class="fa-solid fa-phone text-xs"></i> ${c.phone || 'Sin número'}</p>
+                        </div>
+                        <button onclick="deleteClient('${c.id}')" class="text-gray-500 hover:text-mamba-red p-1">
+                            <i class="fa-solid fa-trash-can"></i>
+                        </button>
+                    </div>
+                    <div class="space-y-2 text-xs text-gray-300">
+                        <p class="flex items-center gap-2"><i class="fa-solid fa-car text-mamba-red w-4"></i> <span class="font-semibold text-white">Vehículo:</span> ${c.vehicle || 'N/A'}</p>
+                        <p class="flex items-center gap-2"><i class="fa-solid fa-house text-mamba-red w-4"></i> <span class="font-semibold text-white">Casa:</span> ${c.home || 'N/A'}</p>
+                        <p class="flex items-center gap-2"><i class="fa-solid fa-briefcase text-mamba-red w-4"></i> <span class="font-semibold text-white">Trabajo:</span> ${c.work || 'N/A'}</p>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function saveClient(e) {
+            e.preventDefault();
+            const id = document.getElementById('client-id').value || Date.now().toString();
+            const name = document.getElementById('client-name').value;
+            const phone = document.getElementById('client-phone').value;
+            const vehicle = document.getElementById('client-vehicle').value;
+            const home = document.getElementById('client-home').value;
+            const work = document.getElementById('client-work').value;
+
+            state.clients.push({ id, name, phone, vehicle, home, work });
+            saveData();
+            closeModal('modal-client');
+            renderClients();
+            populateClientDropdowns();
+            document.getElementById('form-client').reset();
+        }
+
+        function deleteClient(id) {
+            state.clients = state.clients.filter(c => c.id !== id);
+            saveData();
+            renderClients();
+            populateClientDropdowns();
+        }
+
+        function populateClientDropdowns() {
+            const dropdowns = ['quote-client-select', 'invoice-client-select', 'app-client-select'];
+            dropdowns.forEach(id => {
+                const el = document.getElementById(id);
+                if (!el) return;
+                const currentVal = el.value;
+                el.innerHTML = '<option value="">-- Seleccionar Cliente --</option>' + 
+                    state.clients.map(c => `<option value="${c.id}">${c.name} (${c.vehicle || 'S/V'})</option>`).join('');
+                el.value = currentVal;
+            });
+        }
+
+        // --- APPOINTMENTS MODULE ---
+        function openAppointmentModal() {
+            populateClientDropdowns();
+            openModal('modal-appointment');
+        }
+
+        function renderAppointments() {
+            const tbody = document.getElementById('appointments-table-body');
+            if (state.appointments.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="5" class="text-center py-6 text-gray-500">No hay citas programadas</td></tr>`;
+                return;
+            }
+
+            tbody.innerHTML = state.appointments.map(a => {
+                const client = state.clients.find(c => c.id === a.clientId) || { name: 'Cliente Eliminado', vehicle: 'N/A' };
+                const formattedDate = new Date(a.datetime).toLocaleString('es-CR', { dateStyle: 'short', timeStyle: 'short' });
+                return `
+                    <tr class="hover:bg-mamba-border/30 border-b border-mamba-border/40">
+                        <td class="px-4 py-3 font-semibold text-white">${client.name}</td>
+                        <td class="px-4 py-3 text-xs">${client.vehicle || 'N/A'} <br><span class="text-gray-400">${a.details || ''}</span></td>
+                        <td class="px-4 py-3 text-xs text-mamba-red font-bold">${formattedDate}</td>
+                        <td class="px-4 py-3 text-xs uppercase"><span class="bg-black/60 px-2 py-0.5 rounded border border-mamba-border">${a.mode}</span></td>
+                        <td class="px-4 py-3 text-right">
+                            <button onclick="deleteAppointment('${a.id}')" class="text-gray-500 hover:text-mamba-red p-1">
+                                <i class="fa-solid fa-trash-can"></i>
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        function saveAppointment(e) {
+            e.preventDefault();
+            const id = Date.now().toString();
+            const clientId = document.getElementById('app-client-select').value;
+            const datetime = document.getElementById('app-datetime').value;
+            const details = document.getElementById('app-details').value;
+
+            state.appointments.push({ id, clientId, datetime, details, mode: state.currentMode });
+            saveData();
+            closeModal('modal-appointment');
+            renderAppointments();
+            document.getElementById('form-appointment').reset();
+        }
+
+        function deleteAppointment(id) {
+            state.appointments = state.appointments.filter(a => a.id !== id);
+            saveData();
+            renderAppointments();
+        }
+
+        // --- MESSAGING CALCULATOR ---
+        function calculateMessagingCost() {
+            const km = parseFloat(document.getElementById('quote-km').value) || 0;
+            const total = km * 350;
+            document.getElementById('messaging-subtotal-display').textContent = formatColon(total);
+            renderQuotePreview();
+        }
+
+        // --- COTIZACIÓN MODULE ---
+        function renderQuoteFormServices() {
+            const container = document.getElementById('quote-services-checkboxes');
+            const filtered = state.services;
+            container.innerHTML = filtered.map(s => `
+                <label class="flex items-center space-x-2 text-xs text-gray-300 hover:text-white cursor-pointer select-none">
+                    <input type="checkbox" value="${s.id}" onchange="renderQuotePreview()" class="quote-service-checkbox rounded bg-black border-mamba-border text-mamba-red focus:ring-0">
+                    <span class="flex-grow">${s.name}</span>
+                    <span class="font-bold text-gray-400">${formatColon(s.price)}</span>
+                </label>
+            `).join('');
+        }
+
+        function loadQuoteClientData() {
+            renderQuotePreview();
+        }
+
+        function renderQuotePreview() {
+            const clientId = document.getElementById('quote-client-select').value;
+            const client = state.clients.find(c => c.id === clientId) || { name: '___________', phone: '___________', vehicle: '___________', home: '___________' };
+            
+            // Collect checked services
+            const checkedBoxes = document.querySelectorAll('.quote-service-checkbox:checked');
+            let selectedServices = [];
+            let total = 0;
+
+            checkedBoxes.forEach(box => {
+                const s = state.services.find(serv => serv.id === box.value);
+                if (s) {
+                    selectedServices.push(s);
+                    total += s.price;
+                }
+            });
+
+            // If messaging mode
+            let messagingKm = 0;
+            let messagingCost = 0;
+            let pickup = '';
+            let dropoff = '';
+
+            if (state.currentMode === 'mensajeria') {
+                messagingKm = parseFloat(document.getElementById('quote-km').value) || 0;
+                pickup = document.getElementById('quote-pickup').value || 'N/A';
+                dropoff = document.getElementById('quote-dropoff').value || 'N/A';
+                messagingCost = messagingKm * 350;
+                total += messagingCost;
+            }
+
+            const discount = parseFloat(document.getElementById('quote-discount').value) || 0;
+            const finalTotal = Math.max(0, total - discount);
+            const note = document.getElementById('quote-note').value;
+
+            const docTitle = state.currentMode === 'autolavado' ? 'COTIZACIÓN AUTOLAVADO' : 'COTIZACIÓN MENSAJERÍA';
+
+            const previewHTML = `
+                <div class="border-b-4 border-mamba-red pb-4 mb-4 flex justify-between items-start">
+                    <div>
+                        <h1 class="text-2xl font-black text-black tracking-wider font-tech">LAS MAMBAS</h1>
+                        <p class="text-xs font-bold text-mamba-red uppercase">${state.currentMode === 'autolavado' ? 'Auto Lavado & Detailing' : 'Servicios de Mensajería'}</p>
+                        <p class="text-xs text-gray-600 font-semibold mt-1"><i class="fa-brands fa-whatsapp text-green-600"></i> WhatsApp: 8881 8720</p>
+                    </div>
+                    <div class="text-right">
+                        <span class="inline-block bg-black text-white font-bold text-xs px-3 py-1 rounded-md uppercase mb-1">${docTitle}</span>
+                        <p class="text-xs text-gray-500">Fecha: ${new Date().toLocaleDateString('es-CR')}</p>
+                    </div>
+                </div>
+
+                <!-- Client Info Box -->
+                <div class="bg-gray-100 p-3 rounded-lg mb-4 text-xs space-y-1 border border-gray-200">
+                    <p><strong>Cliente:</strong> ${client.name}</p>
+                    <p><strong>Teléfono:</strong> ${client.phone}</p>
+                    <p><strong>Vehículo / Detalle:</strong> ${client.vehicle}</p>
+                    ${state.currentMode === 'mensajeria' ? `
+                        <p class="text-mamba-red font-semibold"><strong>Recolección:</strong> ${pickup}</p>
+                        <p class="text-mamba-red font-semibold"><strong>Entrega:</strong> ${dropoff}</p>
+                    ` : ''}
+                </div>
+
+                <!-- Services Table -->
+                <table class="w-full text-left text-xs mb-4">
+                    <thead>
+                        <tr class="border-b-2 border-black font-bold uppercase text-gray-700">
+                            <th class="py-2">Descripción</th>
+                            <th class="py-2 text-right">Monto</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-200">
+                        ${state.currentMode === 'mensajeria' && messagingKm > 0 ? `
+                            <tr>
+                                <td class="py-2">Servicio de Flete / Recorrido (${messagingKm} km x ₡350.00)</td>
+                                <td class="py-2 text-right font-semibold">${formatColon(messagingCost)}</td>
+                            </tr>
+                        ` : ''}
+                        ${selectedServices.map(s => `
+                            <tr>
+                                <td class="py-2">${s.name}</td>
+                                <td class="py-2 text-right font-semibold">${formatColon(s.price)}</td>
+                            </tr>
+                        `).join('')}
+                        ${selectedServices.length === 0 && (state.currentMode !== 'mensajeria' || messagingKm === 0) ? `
+                            <tr><td colspan="2" class="py-3 text-center text-gray-400 italic">Sin servicios seleccionados</td></tr>
+                        ` : ''}
+                    </tbody>
+                </table>
+
+                <!-- Summary -->
+                <div class="border-t border-gray-300 pt-3 flex justify-end">
+                    <div class="w-1/2 space-y-1 text-xs text-right">
+                        <div class="flex justify-between text-gray-600">
+                            <span>Subtotal:</span>
+                            <span>${formatColon(total)}</span>
+                        </div>
+                        ${discount > 0 ? `
+                        <div class="flex justify-between text-mamba-red font-semibold">
+                            <span>Descuento:</span>
+                            <span>-${formatColon(discount)}</span>
+                        </div>` : ''}
+                        <div class="flex justify-between text-sm font-extrabold text-black border-t border-black pt-1">
+                            <span>TOTAL ESTIMADO:</span>
+                            <span class="text-mamba-red">${formatColon(finalTotal)}</span>
+                        </div>
+                    </div>
+                </div>
+
+                ${note ? `<div class="mt-4 p-2 bg-gray-50 border border-gray-200 text-xs text-gray-600 rounded"><strong>Nota:</strong> ${note}</div>` : ''}
+
+                <div class="mt-6 text-center text-[10px] text-gray-500 border-t pt-3">
+                    ¡Gracias por cotizar con LAS MAMBAS! Contáctanos al 8881 8720 para agendar tu cita.
+                </div>
+            `;
+
+            document.getElementById('printable-quote').innerHTML = previewHTML;
+        }
+
+        // --- FACTURA MODULE ---
+        function renderInvoiceFormServices() {
+            const container = document.getElementById('invoice-services-checkboxes');
+            container.innerHTML = state.services.map(s => `
+                <label class="flex items-center space-x-2 text-xs text-gray-300 hover:text-white cursor-pointer select-none">
+                    <input type="checkbox" value="${s.id}" onchange="renderInvoicePreview()" class="invoice-service-checkbox rounded bg-black border-mamba-border text-mamba-red focus:ring-0">
+                    <span class="flex-grow">${s.name}</span>
+                    <span class="font-bold text-gray-400">${formatColon(s.price)}</span>
+                </label>
+            `).join('');
+        }
+
+        function renderInvoicePreview() {
+            const clientId = document.getElementById('invoice-client-select').value;
+            const client = state.clients.find(c => c.id === clientId) || { name: '___________', phone: '___________', vehicle: '___________' };
+            const paymentMethod = document.getElementById('invoice-payment-method').value;
+
+            const checkedBoxes = document.querySelectorAll('.invoice-service-checkbox:checked');
+            let selectedServices = [];
+            let total = 0;
+
+            checkedBoxes.forEach(box => {
+                const s = state.services.find(serv => serv.id === box.value);
+                if (s) {
+                    selectedServices.push(s);
+                    total += s.price;
+                }
+            });
+
+            const invoiceNum = 'N° ' + Math.floor(1000 + Math.random() * 9000);
+
+            const previewHTML = `
+                <div class="border-b-4 border-mamba-red pb-4 mb-4 flex justify-between items-start">
+                    <div>
+                        <h1 class="text-2xl font-black text-black tracking-wider font-tech">LAS MAMBAS</h1>
+                        <p class="text-xs font-bold text-mamba-red uppercase">${state.currentMode === 'autolavado' ? 'Auto Lavado & Detailing' : 'Servicios de Mensajería'}</p>
+                        <p class="text-xs text-gray-600 font-semibold mt-1"><i class="fa-brands fa-whatsapp text-green-600"></i> Tel: 8881 8720</p>
+                    </div>
+                    <div class="text-right">
+                        <span class="inline-block bg-mamba-red text-white font-bold text-xs px-3 py-1 rounded-md uppercase mb-1">FACTURA DE SERVICIO</span>
+                        <p class="text-xs font-bold text-black">${invoiceNum}</p>
+                        <p class="text-xs text-gray-500">Fecha: ${new Date().toLocaleDateString('es-CR')}</p>
+                    </div>
+                </div>
+
+                <!-- Client Info Box -->
+                <div class="bg-gray-100 p-3 rounded-lg mb-4 text-xs space-y-1 border border-gray-200">
+                    <p><strong>Cliente:</strong> ${client.name}</p>
+                    <p><strong>Teléfono:</strong> ${client.phone}</p>
+                    <p><strong>Vehículo / Servicio:</strong> ${client.vehicle}</p>
+                    <p><strong>Método de Pago:</strong> ${paymentMethod}</p>
+                </div>
+
+                <!-- Services Table -->
+                <table class="w-full text-left text-xs mb-4">
+                    <thead>
+                        <tr class="border-b-2 border-black font-bold uppercase text-gray-700">
+                            <th class="py-2">Item / Servicio</th>
+                            <th class="py-2 text-right">Precio</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-200">
+                        ${selectedServices.map(s => `
+                            <tr>
+                                <td class="py-2">${s.name}</td>
+                                <td class="py-2 text-right font-semibold">${formatColon(s.price)}</td>
+                            </tr>
+                        `).join('')}
+                        ${selectedServices.length === 0 ? `
+                            <tr><td colspan="2" class="py-3 text-center text-gray-400 italic">Selecciona servicios para agregar a la factura</td></tr>
+                        ` : ''}
+                    </tbody>
+                </table>
+
+                <!-- Summary -->
+                <div class="border-t border-gray-300 pt-3 flex justify-end">
+                    <div class="w-1/2 text-right">
+                        <div class="flex justify-between text-base font-extrabold text-black border-t-2 border-mamba-red pt-2">
+                            <span>TOTAL PAGADO:</span>
+                            <span class="text-mamba-red">${formatColon(total)}</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-8 text-center text-xs text-gray-600 border-t pt-3 space-y-1">
+                    <p class="font-bold">¡Gracias por su preferencia!</p>
+                    <p class="text-[10px] text-gray-400">Las Mambas - Calidad y Rapidez Garantizada</p>
+                </div>
+            `;
+
+            document.getElementById('printable-invoice').innerHTML = previewHTML;
+        }
+
+        // --- GENERAL MODAL CONTROL & PRINTING ---
+        function openModal(id) {
+            document.getElementById(id).classList.remove('hidden');
+        }
+
+        function closeModal(id) {
+            document.getElementById(id).classList.add('hidden');
+        }
+
+        function printDocument(elementId) {
+            const printContent = document.getElementById(elementId).innerHTML;
+            const printArea = document.getElementById('printable-area');
+            printArea.innerHTML = printContent;
+            window.print();
+        }
+    </script>
+</body>
+</html>
