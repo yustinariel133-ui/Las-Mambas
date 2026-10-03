@@ -761,7 +761,7 @@
         // --- MESSAGING CALCULATOR ---
         function calculateMessagingCost() {
             const km = parseFloat(document.getElementById('quote-km').value) || 0;
-            const total = km * 350;
+            const total = km * 450;
             document.getElementById('messaging-subtotal-display').textContent = formatColon(total);
             renderQuotePreview();
         }
@@ -810,7 +810,7 @@
                 messagingKm = parseFloat(document.getElementById('quote-km').value) || 0;
                 pickup = document.getElementById('quote-pickup').value || 'N/A';
                 dropoff = document.getElementById('quote-dropoff').value || 'N/A';
-                messagingCost = messagingKm * 350;
+                messagingCost = messagingKm * 450;
                 total += messagingCost;
             }
 
@@ -855,7 +855,7 @@
                     <tbody class="divide-y divide-gray-200">
                         ${state.currentMode === 'mensajeria' && messagingKm > 0 ? `
                             <tr>
-                                <td class="py-2">Servicio de Flete / Recorrido (${messagingKm} km x ₡350.00)</td>
+                                <td class="py-2">Servicio de Flete / Recorrido (${messagingKm} km x ₡450.00)</td>
                                 <td class="py-2 text-right font-semibold">${formatColon(messagingCost)}</td>
                             </tr>
                         ` : ''}
